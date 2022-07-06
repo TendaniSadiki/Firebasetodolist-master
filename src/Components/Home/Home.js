@@ -48,7 +48,8 @@ export default function Home(){
       set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
         todo: todo,
         uidd: uidd,
-        startDate: startDate
+        startDate: startDate,
+        expireDate: expireDate
       });
   
       setTodo("");
@@ -59,12 +60,17 @@ export default function Home(){
       setIsEdit(true);
       setTodo(todo.todo);
       setTempUidd(todo.uidd);
+      setStartDate(todo.startDate)
+      setExDate(todo.expireDate)
     };
   
     const handleEditConfirm = () => {
       update(ref(db, `/${auth.currentUser.uid}/${tempUidd}`), {
         todo: todo,
-        tempUidd: tempUidd
+        tempUidd: tempUidd,
+        startDate: startDate,
+        expireDate: expireDate
+
       });
   
       setTodo("");
@@ -86,7 +92,6 @@ if(mm<10){
   mm='0'+mm
 } 
 today = yyyy+'-'+mm+'-'+dd;
-console.log(today)
 return(
     <div className="page">
     <br></br>
@@ -129,6 +134,7 @@ return(
             <label>Expiring date</label>
             <input type="date"  
             id="date"
+            min={today}
             value={expireDate}
             onChange={(text) => {
               setExDate(text.target.value);
@@ -143,6 +149,8 @@ return(
       {todos.map((todo) => (
         <div className="todo">
           <h1>{todo.todo}</h1>
+          <h1>{todo.startDate}</h1>
+          <h1>{todo.expireDate}</h1>
           <CgPen
             fontSize="large"
             onClick={() => handleUpdate(todo)}
