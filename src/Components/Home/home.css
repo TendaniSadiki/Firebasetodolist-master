@@ -122,8 +122,20 @@ body{
     cursor: pointer;
    
   }
-  
+  .greenbar{
+    background-color: green;
+    width: 100px;
+    height: 100px;
 
+  }
+  .redbar{
+    background-color: red;
+    width: 100px;
+    height: 100px;
+  }
+  .redbar, .greenbar{
+    border-radius: 50%;
+  }
    
    @media screen and (min-width: 400px) {
      body {
