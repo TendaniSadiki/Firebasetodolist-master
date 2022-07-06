@@ -102,7 +102,7 @@ return(
             <div className="datesContent">
             <label>Start date</label>
             <input type="date" 
-            min="2022-06-22"
+            min="2022-07-06"
             id="date"
             value={startDate}
             onChange={(text) => {
