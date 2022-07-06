@@ -21,7 +21,7 @@ export default function Home(){
     const [buttonText, setButtonText] = useState("");
     const [selectedIndex, setSelectedIndex] =useState(null);
     const [startDate, setStartDate] = useState("");
-const [expireDate, setExDate] = useState("");
+    const [expireDate, setExDate] = useState("");
     useEffect(() => {
       auth.onAuthStateChanged((user) => {
         if (user) {
@@ -47,7 +47,8 @@ const [expireDate, setExDate] = useState("");
       const uidd = uid();
       set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
         todo: todo,
-        uidd: uidd
+        uidd: uidd,
+        startDate: startDate
       });
   
       setTodo("");
@@ -74,7 +75,18 @@ const [expireDate, setExDate] = useState("");
     const handleDelete = (uid) => {
       remove(ref(db, `/${auth.currentUser.uid}/${uid}`));
     };
-
+var today = new Date();
+let dd = today.getDate();
+let mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+let yyyy = today.getFullYear();
+if(dd<10){
+  dd='0'+dd
+} 
+if(mm<10){
+  mm='0'+mm
+} 
+today = yyyy+'-'+mm+'-'+dd;
+console.log(today)
 return(
     <div className="page">
     <br></br>
@@ -96,13 +108,14 @@ return(
             }}
             ></input>
             <button  value={todo}
-        onChange={(e) => setTodo(e.target.value)}>Add To List</button>
+        onChange={(e) => setTodo(e.target.value)}
+        onClick={writeToDatabase}>Add To List</button>
             <br></br>
             <div className="dateWrapper">
             <div className="datesContent">
             <label>Start date</label>
             <input type="date" 
-            min="2022-07-06"
+            min={today}
             id="date"
             value={startDate}
             onChange={(text) => {
@@ -145,7 +158,7 @@ return(
 
       {isEdit ? (
         <div>
-        <CgCheck onClick={handleEditConfirm} className="add-confirm-icon"/>
+        <CgCheck onClick={handleEditConfirm} className="add-confirm-icon"/> 
         </div>
       ) : (
         <div>
