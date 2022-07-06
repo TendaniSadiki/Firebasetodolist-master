@@ -2,6 +2,7 @@ import React , { useState } from 'react'
 import {NavLink} from 'react-router-dom';
 import { async } from "@firebase/util";
 import { auth } from "../../firebase-config";
+import Loader from '../Loader/Loader';
 
 import './LoginStyle.css';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -9,6 +10,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 const Login = () =>{
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   let lowerCaseLetters = /[a-z]/g;
   let upperCaseLetters = /[A-Z]/g;
   let numbers = /[0-9]/g;
@@ -16,6 +18,7 @@ const Login = () =>{
  
 
   const signin = async () => {
+setLoading(true);
     let getDetails = {
       email: email,
       pass: password,
@@ -51,14 +54,17 @@ else if(!getDetails.pass.match(lowerCaseLetters)){
     try{
       const user = await signInWithEmailAndPassword(
         auth,email,password);
-      console.log(user)
+      setLoading(false)
      
     }
     catch(error){
       console.log(error.message)
+      setLoading(false)
     }
   }
-  }
+  setLoading(false)
+  };
+  
     
     return(
         <div>
@@ -71,6 +77,7 @@ else if(!getDetails.pass.match(lowerCaseLetters)){
         <div className="form-box">
           <div className="header-form">
           <h1>Sign In</h1>
+          <Loader loading={loading}/>
             <div className="image">
             </div>
           </div>
@@ -81,6 +88,7 @@ else if(!getDetails.pass.match(lowerCaseLetters)){
     <span className="input-group-text"><i class="fa fa-user"></i></span>
   </div>
   <input type="email" className="form-control" placeholder="Email"
+  autoComplete='on'
   value={email}
   onChange={(text) => {
     setEmail(text.target.value);
@@ -91,7 +99,8 @@ else if(!getDetails.pass.match(lowerCaseLetters)){
    <div className="input-group-prepend">
     <span className="input-group-text"><i class="fa fa-lock"></i></span>
   </div>
-  <input type="password" className="form-control" placeholder="Password"
+  <input type="password" className="form-control" placeholder="Password" 
+   autoComplete='on'
   value={password}
   onChange={(text) => {
     setPassword(text.target.value);

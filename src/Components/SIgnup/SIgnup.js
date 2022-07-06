@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, sendSignInLinkToEmail ,onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendSignInLinkToEmail ,onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import { NavLink } from "react-router-dom";
 import './signup.css';
 import { async } from "@firebase/util";
 import { auth } from "../../firebase-config";
+import Loader from "../Loader/Loader";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(false)
   const [loginState, setLoginState] = useState(false);
   let lowerCaseLetters = /[a-z]/g;
   let upperCaseLetters = /[A-Z]/g;
@@ -19,6 +21,7 @@ const Signup = () => {
   })
 
   const register = async  () => {
+    setLoading(true)
     let userdDetails = {
       email: email,
       pass: password,
@@ -56,25 +59,37 @@ const Signup = () => {
     else{
       try{
         const user = await createUserWithEmailAndPassword(
-          auth,email,password);
+          auth,email,password).then(() =>{
+            setLoading(false)
+            window.location('./Login')
+          }).catch((error) =>{
+            console.log(error.message);
+            if (error.message === 'Firebase: Error (auth/email-already-in-use).'){
+              alert('email aready in use')
+            }
+          })
         
-        window.location('./Login')
+      
       }
       catch(error){
-          
+        setLoading(false)
       }
-  };}
+  };   setLoading(false)}
+
 
   return (
     <div>
+     
       <br></br>
       <br></br>
       <br></br>
       <br></br>
       <div className="container">
+   
         <div className="form-box">
-          
+       
           <div className="header-form">
+          <Loader loading={loading} />
           <h1>Sign Up</h1>
           
             <h4 className="text-primary text-center">

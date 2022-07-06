@@ -6,10 +6,12 @@ import {CgCheck} from "react-icons/cg";
 import "./home.css";
 
 
+
 import { auth, db } from "../../firebase-config";
 
 import { uid } from "uid";
 import { set, ref, onValue, remove, update } from "firebase/database";
+import moment from "moment";
 
 
 export default function Home(){ 
@@ -18,8 +20,6 @@ export default function Home(){
     const [todos, setTodos] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [tempUidd, setTempUidd] = useState("");
-    const [buttonText, setButtonText] = useState("");
-    const [selectedIndex, setSelectedIndex] =useState(null);
     const [startDate, setStartDate] = useState("");
     const [expireDate, setExDate] = useState("");
     useEffect(() => {
@@ -92,6 +92,8 @@ if(mm<10){
   mm='0'+mm
 } 
 today = yyyy+'-'+mm+'-'+dd;
+
+
 return(
     <div className="page">
     <br></br>
@@ -151,6 +153,9 @@ return(
           <h1>{todo.todo}</h1>
           <h1>{todo.startDate}</h1>
           <h1>{todo.expireDate}</h1>
+          <div className="indicators">
+          <span className={moment(todo.expireDate).isBefore(today) ? "redbar" : "greenbar" }>x</span>
+          </div>
           <CgPen
             fontSize="large"
             onClick={() => handleUpdate(todo)}
