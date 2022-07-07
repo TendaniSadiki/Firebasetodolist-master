@@ -6,7 +6,8 @@ body{
   .page {
       height: 140px;
       position:inherit;
-      margin-bottom: 30px;
+      margin-bottom: 90px;
+      margin-top: 40px   ;
    }
    .page .todo{
     background:purple;
@@ -30,6 +31,7 @@ body{
     width: 100%;
     background: #F6F5F3;
     border-radius: 15px;
+    margin-top: 100px;
    
 
   }
@@ -37,7 +39,7 @@ body{
   #todoContent h3{
   margin: 4px;
   }
-  #todoContent button{
+  #todoContent button ,.add-confirm-icon{
     margin: 10px;
     padding: 10px;
     width: 100px;
@@ -45,6 +47,9 @@ body{
     border-radius: 15px;
     display: inline-flex;
 
+  }
+  .add-confirm-icon{
+    font-size: 3rem;
   }
   #todoContent button:hover{
     color: #F6F5F3;
@@ -96,27 +101,35 @@ body{
     width: 100%;
     
   }
-  .todoList .left{
+  .left{
   
     width: 90%;
     float: left;
   }
-  .todoList .left span{
+  .left span{
     margin: 10px;
     display: inline-flex;
-    width: 20%;
+    cursor: pointer;
+  }
+  .right span{
+    margin: 20px;
+    display: inline-flex;
+    cursor: pointer;
+    margin-left: -20px;
+    float: left;
     
   }
-  .todoList .left .firstDate{
+   .left .firstDate{
     color: rgb(255, 255, 255);
   }
-  .todoList .right{
-    
+ .right{
     float: right;
     width: 10%;
-    display: inline-flex;
-    
+    display:-ms-inline-grid;
+ 
+  
   }
+  
   .todoList i {
     margin: 5px;
     cursor: pointer;
@@ -124,14 +137,14 @@ body{
   }
   .greenbar{
     background-color: green;
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
 
   }
   .redbar{
     background-color: red;
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
   }
   .redbar, .greenbar{
     border-radius: 50%;

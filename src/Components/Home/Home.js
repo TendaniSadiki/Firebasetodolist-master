@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import {CgClose} from "react-icons/cg";
 import {CgPen} from "react-icons/cg";
-import {CgMathPlus} from "react-icons/cg";
 import {CgCheck} from "react-icons/cg";
 import "./home.css";
 
-
-
 import { auth, db } from "../../firebase-config";
-
 import { uid } from "uid";
 import { set, ref, onValue, remove, update } from "firebase/database";
 import moment from "moment";
@@ -43,6 +39,7 @@ export default function Home(){
     
   
     // add
+     
     const writeToDatabase = () => {
       const uidd = uid();
       set(ref(db, `/${auth.currentUser.uid}/${uidd}`), {
@@ -62,6 +59,7 @@ export default function Home(){
       setTempUidd(todo.uidd);
       setStartDate(todo.startDate)
       setExDate(todo.expireDate)
+      
     };
   
     const handleEditConfirm = () => {
@@ -114,9 +112,17 @@ return(
               setTodo(text.target.value);
             }}
             ></input>
-            <button  value={todo}
+         {isEdit ? (
+        
+        <CgCheck onClick={handleEditConfirm} className="add-confirm-icon"/> 
+        
+      ) : (
+        
+          <button  value={todo}
         onChange={(e) => setTodo(e.target.value)}
         onClick={writeToDatabase}>Add To List</button>
+     
+      )}
             <br></br>
             <div className="dateWrapper">
             <div className="datesContent">
@@ -136,7 +142,7 @@ return(
             <label>Expiring date</label>
             <input type="date"  
             id="date"
-            min={today}
+          
             value={expireDate}
             onChange={(text) => {
               setExDate(text.target.value);
@@ -147,46 +153,46 @@ return(
             </div>
         </div>
   {todos.length > 0 ? ( 
-  < div>
+  <div>
       {todos.map((todo) => (
         <div className="todo">
-          <h1>{todo.todo}</h1>
-          <h1>{todo.startDate}</h1>
-          <h1>{todo.expireDate}</h1>
-          <div className="indicators">
-          <span className={moment(todo.expireDate).isBefore(today) ? "redbar" : "greenbar" }>x</span>
-          </div>
+          <ul>
+            <li>
+              <div className="left">
+                <span>Todo: {todo.todo}</span>
+                <span>Start date: {todo.startDate}</span>
+                <span>Expire date: {todo.expireDate}</span>
+                <div className="indicators">
+                  <span className={moment(todo.expireDate).isBefore(today) ? "redbar" : "greenbar" }> </span>
+                </div>
+              </div>
+              <div className="right">
+                <span>
           <CgPen
             fontSize="large"
             onClick={() => handleUpdate(todo)}
             className="edit-button"
           />
+          </span>
+          <span>
           <CgClose
             fontSize="large"
             onClick={() => handleDelete(todo.uidd)}
             className="delete-button"
           />
+          </span>
+          </div>
+            </li>
+          </ul>
+         
         </div>
       ))}
-
-      {isEdit ? (
-        <div>
-        <CgCheck onClick={handleEditConfirm} className="add-confirm-icon"/> 
-        </div>
-      ) : (
-        <div>
-          <CgMathPlus onClick={writeToDatabase} className="add-confirm-icon" />
-        </div>
-      )}
+ <hr></hr>
+     
       </div>
   ): <div className="emptyContent"><h1>Todo list is empty</h1></div>}                        
-                    
-               
                 </div>
-               
-                
             </ul>
-            
         </div>
     </div>
     );
